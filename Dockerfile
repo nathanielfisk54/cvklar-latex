@@ -10,21 +10,14 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Kopier package files
-COPY package*.json ./
+# Kopier alle filer
+COPY . .
 
 # Installer dependencies
-RUN npm install --production
-
-# Kopier server
-COPY server.js ./
+RUN npm install --omit=dev
 
 # Opprett temp-mappe for LaTeX jobs
 RUN mkdir -p /tmp/latex-jobs
-
-# Healthcheck
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3001/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
 EXPOSE 3001
 

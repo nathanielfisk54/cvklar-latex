@@ -1,22 +1,26 @@
-FROM texlive/texlive:latest
+FROM node:20-slim
 
 WORKDIR /app
 
-# Installer Node.js 20
+# Installer minimal LaTeX
 RUN apt-get update && \
-    apt-get install -y curl && \
-    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends \
+    texlive-latex-base \
+    texlive-latex-extra \
+    texlive-fonts-recommended \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Kopier alle filer
-COPY . .
+# Kopier package files
+COPY package.json package-lock.json ./
 
 # Installer dependencies
-RUN npm install --omit=dev
+RUN npm ci --only=production
 
-# Opprett temp-mappe for LaTeX jobs
+# Kopier resten av filene
+COPY . .
+
+# Opprett temp-mappe
 RUN mkdir -p /tmp/latex-jobs
 
 EXPOSE 3001

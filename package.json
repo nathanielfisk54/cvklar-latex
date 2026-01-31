@@ -1,7 +1,7 @@
 {
-  "name": "cvbygger-latex-service",
+  "name": "cvklar-latex-service",
   "version": "1.0.0",
-  "description": "LaTeX compilation service for CVbygger",
+  "description": "LaTeX compilation service for CVklar",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

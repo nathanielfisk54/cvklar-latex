@@ -14,7 +14,7 @@ RUN apt-get update && \
 COPY package*.json ./
 
 # Installer dependencies
-RUN npm ci --only=production
+RUN npm install --production
 
 # Kopier server
 COPY server.js ./
